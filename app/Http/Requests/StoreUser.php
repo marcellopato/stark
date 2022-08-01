@@ -35,7 +35,7 @@ class StoreUser extends FormRequest
                 'zip' => 'required',
                 'city' => 'required',
                 'state' => 'required',
-                // 'photo' => 'sometimes|image|mimes:jpeg,jpg,png'
+                'photo' => 'sometimes|image|mimes:jpeg,jpg,png'
             ];
     }
 }

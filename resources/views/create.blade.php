@@ -1,10 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+		<br>
+        <h1 class="text-center">
             <a href="{{ route('user.index')}}">{{ __('Stark Industries') }}</a>
         </h2>
     </x-slot>
-
+<br>
     <div class="content mt-2" style="width: 500px;margin:auto">
         <h1>Cadastro de usuário</h1>
         <div class="card">

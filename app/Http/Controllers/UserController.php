@@ -48,6 +48,13 @@ class UserController extends Controller
      */
     public function store(StoreUser $request)
     {
+        // verifica CPF
+        if ($request->cpf){
+            $cpfValido = substr($request->cpf,0,1);
+            if(($cpfValido == 7) ||  ($cpfValido == 8) || ($cpfValido == 9)){
+                return '<h1>Você não pode se cadastrar!</h1>';
+            }
+        }
         $input = $request->validated();
         $user = User::create($input);
         if ($request->hasFile('photo')) {
