@@ -24,9 +24,12 @@ class User extends Authenticatable
         'zipcode',
         'street',
         'number',
+        'cpf',
+        'rg',
         'zip',
         'city',
-        'state',  
+        'state',
+        'photo'  
     ];
 
     /**

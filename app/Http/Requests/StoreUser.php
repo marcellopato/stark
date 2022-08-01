@@ -27,12 +27,15 @@ class StoreUser extends FormRequest
                 'name' => 'required|min:3|max:255',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|confirmed|min:3|max:10',
+                'cpf' => 'required',
+                'rg' => 'required',
                 'zipcode' => 'required',
                 'street' => 'required',
                 'number' => 'required',
                 'zip' => 'required',
                 'city' => 'required',
-                'state' => 'required'
+                'state' => 'required',
+                // 'photo' => 'sometimes|image|mimes:jpeg,jpg,png'
             ];
     }
 }

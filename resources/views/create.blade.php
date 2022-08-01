@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Stark Industries') }}
+            <a href="{{ route('user.index')}}">{{ __('Stark Industries') }}</a>
         </h2>
     </x-slot>
 
@@ -18,7 +18,7 @@
 						</ul>
 					</div>
 				@endif
-				<form method="POST" action="{{ route('user.store') }}">
+				<form method="POST" action="{{ route('user.store') }}" enctype="multipart/form-data">
 					@csrf
 					<!-- Name -->
 					<div>
@@ -49,10 +49,29 @@
 										type="password"
 										name="password_confirmation"  />
 					</div>
+
+					<!-- CPF -->
+					<div class="mt-4">
+						<x-label for="cpf" :value="__('CPF')" />
+						<x-input id="cpf" class="block mt-1 w-full" type="text" min-length="8" max-length="8"
+						data-mask="00000000000"
+						name="cpf" :value="old('cpf')" />
+					</div>
+
+					<!-- RG -->
+					<div class="mt-4">
+						<x-label for="rg" :value="__('RG')" />
+						<x-input id="rg" class="block mt-1 w-full" type="text" min-length="8" max-length="8"
+						data-mask="000000000"
+						name="rg" :value="old('rg')" />
+					</div>
+
 					<!-- CEP -->
 					<div class="mt-4">
 						<x-label for="zipcode" :value="__('CEP')" />
-						<x-input id="zipcode" class="block mt-1 w-full" type="text" name="zipcode" :value="old('zipcode')"  />
+						<x-input id="zipcode" class="block mt-1 w-full" type="text" min-length="8" max-length="8"
+						data-mask="00000000"
+						name="zipcode" :value="old('zipcode')" />
 					</div>
 
 					<!-- Rua -->

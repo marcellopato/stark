@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUser;
 use App\Models\User;
+use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -15,8 +18,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('dashboard')->with('users', $users);
+        $users = User::latest();
+        if (!request()->hasFile('photo')){
+            if (request('busca')){
+                $users
+                    ->where('name', 'like', '%'.request('busca').'%')
+                    ->orWhere('cpf', 'like', '%'.request('busca').'%')
+                    ->orWhere('rg', 'like', '%'.request('busca').'%');
+            }
+        }
+        return view('dashboard')->with('users', $users->get());
     }
 
     /**
@@ -37,54 +48,22 @@ class UserController extends Controller
      */
     public function store(StoreUser $request)
     {
-        $input = $request->all();
+        $input = $request->validated();
         $user = User::create($input);
-
-        return $this->index();
+        if ($request->hasFile('photo')) {
+            $avatar = $request->file('photo');
+            $nome = time().'_'.$avatar->getClientOriginalName();
+            $path = public_path('/images/');
+            $avatar->move($path, $nome);
+            $this->gravaImagem($nome, $user->id);
+        }
+        $users = User::latest();
+        return view('dashboard')->with('users', $users->get());
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    protected function gravaImagem($nome, $user)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        User::where('id', $user)
+            ->update(['photo' => $nome]);
     }
 }
